@@ -6,8 +6,11 @@ final class StilleMenu : NSMenu {
     private let spotifyItem = NSMenuItem(title: "Spotify", action: #selector(selectApp(sender:)), keyEquivalent: "")
     private let soundCloudItem = NSMenuItem(title: "Chrome - SoundCloud", action: #selector(selectApp(sender:)), keyEquivalent: "")
     
+    private var timer: Timer?
     private var isRunning = false
     private var selectedApp = "Spotify"
+    private var remainingSeconds = 0
+    private let secondsPerMinute = 60
     
     required init(coder: NSCoder) {
         super.init(coder: coder)
@@ -16,38 +19,31 @@ final class StilleMenu : NSMenu {
     init() {
         super.init(title: "Stille")
         
-        // TODO replace X with actual time
-        let isRunningItem = NSMenuItem(title: isRunning ? "Stille in X minutes" : "Not running", action: nil, keyEquivalent: "")
+        let isRunningItem = NSMenuItem(title: "Not running", action: nil, keyEquivalent: "")
         self.addItem(isRunningItem)
-        let timer = Timer(timeInterval: TimeInterval.init(1), repeats: true) { timer in
-            print("DRAW")
-            isRunningItem.title = self.isRunning ? "Stille in X minutes" : "Not running"
-        }
-        RunLoop.main.add(timer, forMode: .common)
         
         self.addItem(NSMenuItem.separator())
         
         let minutesItem = NSMenuItem(title: "Pause music in", action: nil, keyEquivalent: "")
         let minutesSubmenu = NSMenu()
-        let fifteen = NSMenuItem(title: "15 minutes", action: #selector(setMinutes(sender:)), keyEquivalent: "")
-        fifteen.representedObject = 15
-        fifteen.target = self
-        minutesSubmenu.addItem(fifteen)
         
-        let twentyfive = NSMenuItem(title: "25 minutes", action: #selector(setMinutes(sender:)), keyEquivalent: "")
-        fifteen.representedObject = 25
-        twentyfive.target = self
-        minutesSubmenu.addItem(twentyfive)
+        let shortDuration = NSMenuItem(title: "15 minutes", action: #selector(setMinutes(sender:)), keyEquivalent: "")
+        shortDuration.representedObject = 15
+        shortDuration.target = self
+        minutesSubmenu.addItem(shortDuration)
         
-        let fourtyfive = NSMenuItem(title: "45 minutes", action: #selector(setMinutes(sender:)), keyEquivalent: "")
-        fifteen.representedObject = 45
-        fourtyfive.target = self
-        minutesSubmenu.addItem(fourtyfive)
+        let mediumDuration = NSMenuItem(title: "25 minutes", action: #selector(setMinutes(sender:)), keyEquivalent: "")
+        mediumDuration.representedObject = 25
+        mediumDuration.target = self
+        minutesSubmenu.addItem(mediumDuration)
+        
+        let longDuration = NSMenuItem(title: "45 minutes", action: #selector(setMinutes(sender:)), keyEquivalent: "")
+        longDuration.representedObject = 45
+        longDuration.target = self
+        minutesSubmenu.addItem(longDuration)
         
         minutesItem.submenu = minutesSubmenu
         self.addItem(minutesItem)
-        
-        self.addItem(NSMenuItem.separator())
         
         let appItem = NSMenuItem(title: "App", action: nil, keyEquivalent: "")
         let appSubmenu = NSMenu()
@@ -62,19 +58,39 @@ final class StilleMenu : NSMenu {
         appItem.submenu = appSubmenu
         self.addItem(appItem)
         
-        // TODO self.addItem - Stille - silence
+        self.addItem(NSMenuItem.separator())
+        
+        self.addItem(NSMenuItem(title: "Stille Ger. silence", action: nil, keyEquivalent: ""))
+        
+        let tickTimer = Timer(timeInterval: 1, repeats: true) { timer in
+            if self.isRunning && self.remainingSeconds > 0 {
+                self.remainingSeconds -= 1
+            }
+            isRunningItem.title = self.isRunning ? "Stille in \(self.remainingSeconds / self.secondsPerMinute) minutes" : "Not running"
+        }
+        RunLoop.main.add(tickTimer, forMode: .common)
     }
     
     @objc private func setMinutes(sender: NSMenuItem) {
         print("setMinutes(\(sender)")
         
         guard let minutes = sender.representedObject as? Int else {
-            print("\(sender.title) is not an integer.")
+            print("\(sender.title) is not an integer")
             return
         }
-        isRunning = true
         
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now().advanced(by: DispatchTimeInterval.seconds(minutes))) {
+        if isRunning {
+            print("Invalidating active timer")
+            timer?.invalidate()
+            timer = nil
+        }
+        
+        isRunning = true
+        remainingSeconds = minutes * secondsPerMinute
+        
+        timer = Timer(timeInterval: Double(minutes * secondsPerMinute), repeats: false) { timer in
+            print("Timer elapsed")
+            
             self.isRunning = false
             
             let toggleScript: String
@@ -92,6 +108,7 @@ final class StilleMenu : NSMenu {
                 }
             }
         }
+        RunLoop.main.add(timer!, forMode: .common)
     }
 
     @objc private func selectApp(sender: NSMenuItem) {
