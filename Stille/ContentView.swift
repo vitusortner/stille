@@ -10,18 +10,18 @@ import SwiftUI
 
 struct ContentView: View {
     
-    @State private var minutes: Int = 0
+    @State private var seconds: Int = 0
     
-    @State private var countdown: Int?
+    @State private var remainingSeconds: Int?
     
     private var numberProxy: Binding<String> {
          Binding<String>(
-             get: { String(minutes) },
+             get: { String(seconds) },
              set: {
-                if let min = Int($0) {
-                    minutes = min
+                if let sec = Int($0) {
+                    seconds = sec
                 } else {
-                    minutes = 0
+                    seconds = 0
                 }
              }
          )
@@ -29,29 +29,20 @@ struct ContentView: View {
     
     var body: some View {
         VStack {
-            if countdown != nil && !(countdown! < 0) {
-                Text("\(countdown!)")
+            if let remainingSeconds = remainingSeconds, remainingSeconds >= 0 {
+                Text("\(remainingSeconds)")
             }
             HStack {
                 TextField("Take a break in:", text: numberProxy)
                 Button("Start") {
-                    let seconds = minutes // * 60
-                    countdown = seconds
+                    remainingSeconds = seconds
                     startCountdown()
-                    
-                    print(seconds)
-                    
                     DispatchQueue.main.asyncAfter(deadline: DispatchTime.now().advanced(by: DispatchTimeInterval.seconds(seconds))) {
-                        let togglePlayback = """
-                            tell application "Spotify"
-                                playpause
-                            end tell
-                        """
                         var error: NSDictionary?
-                        if let scriptObject = NSAppleScript(source: togglePlayback) {
+                        if let scriptObject = NSAppleScript(source: toggleSoundCloudPlayback) {
                             scriptObject.executeAndReturnError(&error)
                             if (error != nil) {
-                                print("Error \(String(describing: error))")
+                                print("Error: \(String(describing: error))")
                             }
                             
                         }
@@ -64,17 +55,32 @@ struct ContentView: View {
     
     private func startCountdown() {
         Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer in
-            if (countdown != nil) {
-                countdown! -= 1
-                
-                if countdown! <= 0 {
+            if (remainingSeconds != nil) {
+                if remainingSeconds! <= 0 {
                     timer.invalidate()
                 }
+                remainingSeconds! -= 1
             }
         }
     }
+    
+    private let toggleSpotifyPlayback = """
+        tell application "Spotify"
+            playpause
+        end tell
+    """
+    
+    private let toggleSoundCloudPlayback = """
+        tell application "Google Chrome"
+            repeat with theTab in every tab in every window
+                if URL of theTab starts with "https://soundcloud.com" then
+                    execute theTab javascript "var el = document.querySelector('button.playControls__" & "play" & "'); el && el.click()"
+                    return
+                end if
+            end repeat
+        end tell
+    """
 }
-
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
