@@ -1,20 +1,12 @@
-//
-//  ContentView.swift
-//  Stille
-//
-//  Created by Vitus on 28.09.20.
-//  Copyright © 2020 Vitus. All rights reserved.
-//
-
 import SwiftUI
 
 struct ContentView: View {
     
-    @State private var seconds: Int = 0
+    @State private var seconds = 0
     
     @State private var remainingSeconds: Int?
     
-    private var numberProxy: Binding<String> {
+    private var secondsBinding: Binding<String> {
          Binding<String>(
              get: { String(seconds) },
              set: {
@@ -27,19 +19,31 @@ struct ContentView: View {
          )
      }
     
+    private let playbackApps = ["Spotify", "SoundCloud"]
+    
+    @State private var selectedPlaybackAppIndex = 0
+    
     var body: some View {
         VStack {
             if let remainingSeconds = remainingSeconds, remainingSeconds >= 0 {
                 Text("\(remainingSeconds)")
             }
             HStack {
-                TextField("Take a break in:", text: numberProxy)
+                TextField("Take a break in:", text: secondsBinding)
                 Button("Start") {
                     remainingSeconds = seconds
                     startCountdown()
                     DispatchQueue.main.asyncAfter(deadline: DispatchTime.now().advanced(by: DispatchTimeInterval.seconds(seconds))) {
+                        let toggleScript: String
+                        
+                        switch playbackApps[selectedPlaybackAppIndex] {
+                        case "Spotify": toggleScript = toggleSpotifyPlayback
+                        case "SoundCloud": toggleScript = toggleSoundCloudPlayback
+                        default: return
+                        }
+                        
                         var error: NSDictionary?
-                        if let scriptObject = NSAppleScript(source: toggleSoundCloudPlayback) {
+                        if let scriptObject = NSAppleScript(source: toggleScript) {
                             scriptObject.executeAndReturnError(&error)
                             if (error != nil) {
                                 print("Error: \(String(describing: error))")
@@ -47,6 +51,11 @@ struct ContentView: View {
                             
                         }
                     }
+                }
+            }
+            Picker(selection: $selectedPlaybackAppIndex, label: Text("Music App")) {
+                ForEach(0 ..< playbackApps.count) {
+                    Text(playbackApps[$0])
                 }
             }
         }
