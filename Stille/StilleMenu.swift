@@ -61,6 +61,9 @@ final class StilleMenu : NSMenu {
         self.addItem(NSMenuItem.separator())
         
         self.addItem(NSMenuItem(title: "Stille Ger. silence", action: nil, keyEquivalent: ""))
+        let quitItem = NSMenuItem(title: "Quit", action: #selector(terminate), keyEquivalent: "")
+        quitItem.target = self
+        self.addItem(quitItem)
         
         let tickTimer = Timer(timeInterval: 1, repeats: true) { timer in
             if self.isRunning && self.remainingSeconds > 0 {
@@ -125,6 +128,10 @@ final class StilleMenu : NSMenu {
             soundCloudItem.state = .on
         default: return
         }
+    }
+    
+    @objc private func terminate() {
+        NSApp.terminate(nil)
     }
     
     private let toggleSpotifyPlayback = """
