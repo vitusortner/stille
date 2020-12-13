@@ -33,7 +33,7 @@
 	<key>LSUIElement</key>
 	<true/>
 	<key>LSApplicationCategoryType</key>
-	<string></string>
+	<string>public.app-category.utilities</string>
 	<key>NSAppleEventsUsageDescription</key>
 	<string></string>
 	<key>NSSupportsSuddenTermination</key>
