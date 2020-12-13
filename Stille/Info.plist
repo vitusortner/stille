@@ -32,6 +32,10 @@
 	<true/>
 	<key>LSUIElement</key>
 	<true/>
+	<key>LSApplicationCategoryType</key>
+	<string></string>
+	<key>NSAppleEventsUsageDescription</key>
+	<string></string>
 	<key>NSSupportsSuddenTermination</key>
 	<true/>
 </dict>
