@@ -3,14 +3,20 @@ import Foundation
 
 final class StilleMenu : NSMenu {
     
+    private let isRunningItem = NSMenuItem(title: "Not running", action: nil, keyEquivalent: "")
+    private let isRunningSubmenu = NSMenu()
+    
     private let spotifyItem = NSMenuItem(title: "Spotify", action: #selector(selectApp(sender:)), keyEquivalent: "")
     private let soundCloudItem = NSMenuItem(title: "Chrome - SoundCloud", action: #selector(selectApp(sender:)), keyEquivalent: "")
     
+    private let secondsPerMinute = 60
+    
     private var timer: Timer?
+    
+    // state
     private var isRunning = false
     private var selectedApp = "Spotify"
     private var remainingSeconds = 0
-    private let secondsPerMinute = 60
     
     required init(coder: NSCoder) {
         super.init(coder: coder)
@@ -18,8 +24,11 @@ final class StilleMenu : NSMenu {
     
     init() {
         super.init(title: "Stille")
+
+        let stopItem = NSMenuItem(title: "Stop", action: #selector(stop), keyEquivalent: "")
+        stopItem.target = self
+        isRunningSubmenu.addItem(stopItem)
         
-        let isRunningItem = NSMenuItem(title: "Not running", action: nil, keyEquivalent: "")
         self.addItem(isRunningItem)
         
         self.addItem(NSMenuItem.separator())
@@ -69,7 +78,7 @@ final class StilleMenu : NSMenu {
             if self.isRunning && self.remainingSeconds > 0 {
                 self.remainingSeconds -= 1
             }
-            isRunningItem.title = self.isRunning ? "Stille in \(self.remainingSeconds / self.secondsPerMinute) minutes" : "Not running"
+            self.isRunningItem.title = self.isRunning ? "Stille in \(self.remainingSeconds / self.secondsPerMinute) minutes" : "Not running"
         }
         RunLoop.main.add(tickTimer, forMode: .common)
     }
@@ -91,10 +100,16 @@ final class StilleMenu : NSMenu {
         isRunning = true
         remainingSeconds = minutes * secondsPerMinute
         
+        isRunningItem.submenu = isRunningSubmenu
+        isRunningItem.isEnabled = true
+        
         timer = Timer(timeInterval: Double(minutes * secondsPerMinute), repeats: false) { timer in
             print("Timer elapsed")
             
             self.isRunning = false
+            
+            self.isRunningItem.submenu = nil
+            self.isRunningItem.isEnabled = false
             
             let toggleScript: String
             switch self.selectedApp {
@@ -130,7 +145,18 @@ final class StilleMenu : NSMenu {
         }
     }
     
+    @objc private func stop() {
+        print("Stopping active timer")
+        isRunning = false
+        isRunningItem.submenu = nil
+        isRunningItem.isEnabled = false
+        
+        timer?.invalidate()
+        timer = nil
+    }
+    
     @objc private func terminate() {
+        print("Terminating app")
         NSApp.terminate(nil)
     }
     
