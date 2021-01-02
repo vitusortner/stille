@@ -23,4 +23,4 @@ Note: You'll need to allow the app to interact with Chrome. This can be done in 
 
 ## Download
 
-Refer to the [most recent release](https://github.com/vitusortner/stille/releases) and download the attached .app file.
+Refer to the [most recent release](https://github.com/vitusortner/stille/releases) and download the attached Stille.zip file.
