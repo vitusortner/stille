@@ -11,8 +11,6 @@
 		7ACD81D425864DC20025D112 /* StilleMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ACD81D325864DC20025D112 /* StilleMenu.swift */; };
 		7AF8C9AA2522595100FEC14E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AF8C9A92522595100FEC14E /* AppDelegate.swift */; };
 		7AF8C9AE2522595300FEC14E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7AF8C9AD2522595300FEC14E /* Assets.xcassets */; };
-		7AF8C9C02522595300FEC14E /* StilleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AF8C9BF2522595300FEC14E /* StilleTests.swift */; };
-		7AF8C9CB2522595300FEC14E /* StilleUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AF8C9CA2522595300FEC14E /* StilleUITests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -41,11 +39,7 @@
 		7AF8C9B52522595300FEC14E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		7AF8C9B62522595300FEC14E /* Stille.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Stille.entitlements; sourceTree = "<group>"; };
 		7AF8C9BB2522595300FEC14E /* StilleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = StilleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		7AF8C9BF2522595300FEC14E /* StilleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StilleTests.swift; sourceTree = "<group>"; };
-		7AF8C9C12522595300FEC14E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		7AF8C9C62522595300FEC14E /* StilleUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = StilleUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		7AF8C9CA2522595300FEC14E /* StilleUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StilleUITests.swift; sourceTree = "<group>"; };
-		7AF8C9CC2522595300FEC14E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -77,8 +71,6 @@
 			isa = PBXGroup;
 			children = (
 				7AF8C9A82522595100FEC14E /* Stille */,
-				7AF8C9BE2522595300FEC14E /* StilleTests */,
-				7AF8C9C92522595300FEC14E /* StilleUITests */,
 				7AF8C9A72522595100FEC14E /* Products */,
 			);
 			sourceTree = "<group>";
@@ -104,24 +96,6 @@
 				7A0C018E258D60A900984440 /* main.swift */,
 			);
 			path = Stille;
-			sourceTree = "<group>";
-		};
-		7AF8C9BE2522595300FEC14E /* StilleTests */ = {
-			isa = PBXGroup;
-			children = (
-				7AF8C9BF2522595300FEC14E /* StilleTests.swift */,
-				7AF8C9C12522595300FEC14E /* Info.plist */,
-			);
-			path = StilleTests;
-			sourceTree = "<group>";
-		};
-		7AF8C9C92522595300FEC14E /* StilleUITests */ = {
-			isa = PBXGroup;
-			children = (
-				7AF8C9CA2522595300FEC14E /* StilleUITests.swift */,
-				7AF8C9CC2522595300FEC14E /* Info.plist */,
-			);
-			path = StilleUITests;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -263,7 +237,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7AF8C9C02522595300FEC14E /* StilleTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -271,7 +244,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7AF8C9CB2522595300FEC14E /* StilleUITests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
