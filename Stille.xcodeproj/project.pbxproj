@@ -32,6 +32,7 @@
 
 /* Begin PBXFileReference section */
 		7A0C018E258D60A900984440 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		7A0DBA8E25A10ED0009E4032 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		7ACD81D325864DC20025D112 /* StilleMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StilleMenu.swift; sourceTree = "<group>"; };
 		7AF8C9A62522595100FEC14E /* Stille.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Stille.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7AF8C9A92522595100FEC14E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -70,6 +71,7 @@
 		7AF8C99D2522595100FEC14E = {
 			isa = PBXGroup;
 			children = (
+				7A0DBA8E25A10ED0009E4032 /* README.md */,
 				7AF8C9A82522595100FEC14E /* Stille */,
 				7AF8C9A72522595100FEC14E /* Products */,
 			);
