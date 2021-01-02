@@ -1,3 +1,5 @@
+![](img/header.png)
+
 #  Stille
 
 *Timer with a subtle, playback-based reminder, living in your Mac's menu bar.*
